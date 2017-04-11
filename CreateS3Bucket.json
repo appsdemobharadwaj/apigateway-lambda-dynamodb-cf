@@ -1,29 +1,30 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "AWS CloudFormation Template to create an S3 bucket",
+  "Description" : "CloudFormation template for Amazon S3 New",
 
   "Resources" : {
-    "S3Bucket" : {
-      "Type" : "AWS::S3::Bucket",
-      "Properties" : {
-        "AccessControl" : "PublicRead",
-        "WebsiteConfiguration" : {
-          "IndexDocument" : "index.html",
-          "ErrorDocument" : "error.html"      
-         }
-      }
-    }
+    "S3BucketPOC":{
+	"Type":"AWS::S3::Bucket",
+	"Properties":{
+	 "AccessControl" : "PublicRead"
+	}
+	}
   },
 
   "Outputs" : {
-    "WebsiteURL" : {
-      "Value" : { "Fn::GetAtt" : [ "S3Bucket", "WebsiteURL" ] },
-      "Description" : "URL for website hosted on S3"
-    },
-    "S3BucketSecureURL" : {
-      "Value" : { "Fn::Join" : [ "", [ "https://", { "Fn::GetAtt" : [ "S3Bucket", "DomainName" ] } ] ] },
-      "Description" : "Name of S3 bucket to hold website content"
-    }
-  } 
+     "BucketName" : {
+      "Value" : { "Ref" : "S3BucketPOC" },
+      "Description" : "BucketName of S3",
+	  "Export":{
+			"Name":"FIDARN"
+		}
+   },
+   "S3ARN":{
+      "Value" : { "Fn::Join" : [
+         "", [ "arn:aws:s3:::", { "Ref" : "S3BucketPOC" } ]
+      ] },
+      "Description" : "ARN of S3 bucket"
+      }
+  }
 }
